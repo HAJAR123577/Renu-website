@@ -1,0 +1,36 @@
+<%= form_with(model: annonce, data: { turbo: false }, html: { class: "space-y-6", id: "new_annonce_form" }) do |form| %>
+    <div>
+      <%= form.label :nom_produit, class: "block text-gray-700 font-medium mb-2" %>
+      <%= form.text_field :nom_produit, class: "w-full border border-gray-300 p-2 rounded-lg" %>
+    </div>
+  
+    <div>
+      <%= form.label :description, class: "block text-gray-700 font-medium mb-2" %>
+      <%= form.text_area :description, rows: 4, class: "w-full border border-gray-300 p-2 rounded-lg" %>
+    </div>
+  
+    <div>
+      <%= form.label :prix, class: "block text-gray-700 font-medium mb-2" %>
+      <%= form.number_field :prix, step: 0.01, class: "w-full border border-gray-300 p-2 rounded-lg" %>
+    </div>
+  
+    <div>
+      <%= form.label :date_publication, class: "block text-gray-700 font-medium mb-2" %>
+      <%= form.date_field :date_publication, class: "w-full border border-gray-300 p-2 rounded-lg" %>
+    </div>
+  
+    <div>
+      <%= form.label :category_id, "Catégorie", class: "block text-gray-700 font-medium mb-2" %>
+      <%= form.collection_select :category_id, Category.all, :id, :nom, {}, { class: "w-full border border-gray-300 p-2 rounded-lg" } %>
+    </div>
+  
+    <div>
+      <%= form.label :photo, class: "block text-gray-700 font-medium mb-2" %>
+      <%= form.file_field :photo, class: "w-full border border-gray-300 p-2 rounded-lg" %>
+    </div>
+  
+    <div>
+      <%= form.submit annonce.persisted? ? "Mettre à jour" : "Créer l'annonce", 
+                     class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg" %>
+    </div>
+  <% end %>

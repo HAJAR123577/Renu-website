@@ -1,0 +1,75 @@
+<div class="max-w-5xl mx-auto p-10 bg-white shadow-2xl rounded-3xl mt-16">
+  <!-- Header du profil -->
+  <div class="flex flex-col md:flex-row items-center md:items-start md:space-x-8 mb-10">
+    <div class="flex-shrink-0">
+      <div class="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-5xl font-bold shadow-lg">
+        <%= @utilisateur.nom[0].upcase %>
+      </div>
+    </div>
+    <div class="text-center md:text-left mt-6 md:mt-0">
+      <h1 class="text-4xl font-extrabold text-gray-900 mb-2">
+        <%= @utilisateur.nom %>
+      </h1>
+      <p class="text-gray-600 text-lg">Membre depuis <%= @utilisateur.created_at.strftime("%B %Y") %></p>
+    </div>
+  </div>
+
+  <!-- Informations -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="p-6 bg-gray-50 rounded-2xl shadow-md hover:shadow-lg transition-all">
+      <h2 class="text-xl font-semibold text-gray-800 mb-2">Adresse Email</h2>
+      <p class="text-gray-600"><%= @utilisateur.email %></p>
+    </div>
+
+    <div class="p-6 bg-gray-50 rounded-2xl shadow-md hover:shadow-lg transition-all">
+      <h2 class="text-xl font-semibold text-gray-800 mb-2">Statut</h2>
+      <p class="text-gray-600">
+        <%= @utilisateur.admin? ? "Administrateur" : "Utilisateur actif" %>
+      </p>
+    </div>
+  </div>
+
+  <!-- Ligne de séparation -->
+  <div class="border-t border-gray-200 my-12"></div>
+
+  <!-- Footer d'action -->
+  <div class="flex justify-center space-x-6">
+   <%= link_to "Modifier Profil", edit_utilisateur_path(@utilisateur), class: "bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition-all" %>
+
+    
+      <%= button_to 'Supprimer le compte', utilisateur_path(@utilisateur),
+      method: :delete,
+      form: { data: { confirm: 'Êtes-vous sûr de vouloir supprimer cet utilisateur ?' }},
+      class: "bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-xl shadow-md transition-all" %>
+
+
+    
+  </div>
+</div>
+
+<% if current_user.admin? %>
+  <div class="max-w-5xl mx-auto mt-10 p-6 bg-gray-100 rounded-xl shadow-lg">
+    <h2 class="text-2xl font-bold mb-4 text-gray-800">Liste des utilisateurs</h2>
+    <ul class="space-y-2">
+      <% Utilisateur.where(admin: false).each do |user| %>
+        <li class="bg-white p-4 rounded-lg shadow-md flex justify-between items-center">
+          <div>
+            <span class="font-medium text-gray-800"><%= user.nom %></span> - 
+            <span class="text-gray-600"><%= user.email %></span>
+          </div>
+          <div class="flex space-x-4">
+            
+          <%= button_to 'Supprimer', utilisateur_path(user),
+          method: :delete,
+          form: { data: { turbo_confirm: 'Confirmer la suppression ?' } },
+          class: "text-red-600 hover:text-red-800 font-medium text-sm" %>
+
+
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+

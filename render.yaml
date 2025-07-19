@@ -1,0 +1,23 @@
+databases:
+  - name: RenuApp
+    databaseName: renuapp_production
+    user: renuapp_user
+    plan: free
+
+services:
+  - type: web
+    name: renuapp-web
+    runtime: ruby
+    plan: free
+    buildCommand: 'bash bin/render-build.sh'
+
+    startCommand: 'bundle exec rails server'
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: RenuApp
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: RAILS_ENV
+        value: production

@@ -1,0 +1,112 @@
+<header class="fixed top-0 left-0 w-full bg-white shadow-md z-50">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16 md:h-20">
+      <!-- Logo -->
+      <div class="flex-shrink-0 flex items-center">
+        <%= link_to root_path, class: "flex items-center" do %>
+          <%= image_tag('Renu.png', alt: 'AvitoClone', class: 'h-12 md:h-16 w-auto') %>
+        <% end %>
+      </div>
+
+      <!-- Navigation principale (Desktop) -->
+      <nav id="desktop-menu" class="hidden lg:flex mx-6 space-x-1">
+      <%= nav_link "Électronique", electronique_annonces_path, class: "px-4 py-2 rounded-md" %>
+      <%= nav_link "Maison", maison_annonces_path, class: "px-4 py-2 rounded-md" %>
+      <%= nav_link "Vêtements", vetements_annonces_path, class: "px-4 py-2 rounded-md" %>
+      <%= nav_link "Livres", livres_annonces_path, class: "px-4 py-2 rounded-md" %>
+      <%= nav_link "Sport", sport_annonces_path, class: "px-4 py-2 rounded-md" %>
+      </nav>
+
+      <!-- Actions utilisateur -->
+      <div class="flex items-center space-x-3 md:space-x-4">
+        <!-- Bouton Publier une annonce -->
+        <% if logged_in? %>
+          <%= link_to "Publier une annonce", new_annonce_path,
+            class: "hidden md:flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 transition-all duration-200" %>
+        <% else %>
+          <%= link_to "Publier une annonce", login_path,
+            class: "hidden md:flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 transition-all duration-200" %>
+        <% end %>
+
+        <% if logged_in? %>
+          <!-- Affichage profil utilisateur -->
+          <div class="relative">
+            <button id="profile-button" class="flex items-center space-x-2 focus:outline-none">
+              <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
+                <%= current_user.nom[0].upcase %>
+              </div>
+              <span class="hidden md:inline text-sm font-medium text-gray-700 hover:text-blue-600">
+                <%= current_user.nom %>
+              </span>
+            </button>
+
+            <!-- Menu profil déroulant -->
+            <div id="profile-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+              <%= link_to "Mon profil", utilisateur_path(current_user), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+              <%= link_to "Mes annonces", annonces_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+              <%= link_to "Paramètres", edit_utilisateur_path(current_user), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+              <div class="border-t border-gray-200 my-1"></div>
+              <%= link_to "Se déconnecter", logout_path, method: :delete,
+                  class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+            </div>
+          </div>
+        <% else %>
+          <!-- Bouton Se connecter -->
+          <%= link_to "Se connecter", login_path,
+            class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200" %>
+        <% end %>
+
+        <!-- Bouton Hamburger Mobile -->
+        <button id="mobile-menu-button" class="lg:hidden text-gray-500 hover:text-gray-600 focus:outline-none">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Menu mobile caché au départ -->
+    <div id="mobile-menu" class="hidden mt-2 lg:hidden">
+      <nav class="flex flex-col space-y-2">
+      <%= nav_link "Électronique", electronique_annonces_path, class: "px-4 py-2 rounded-md" %>
+      <%= nav_link "Maison", maison_annonces_path, class: "px-4 py-2 rounded-md" %>
+      <%= nav_link "Vêtements", vetements_annonces_path, class: "px-4 py-2 rounded-md" %>
+      <%= nav_link "Livres", livres_annonces_path, class: "px-4 py-2 rounded-md" %>
+      <%= nav_link "Sport", sport_annonces_path, class: "px-4 py-2 rounded-md" %>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- Petit JavaScript pour rendre le tout interactif -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Gestion du menu profil
+    const profileButton = document.getElementById('profile-button');
+    const profileMenu = document.getElementById('profile-menu');
+
+    if (profileButton && profileMenu) {
+      profileButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        profileMenu.classList.toggle('hidden');
+      });
+
+      // Fermer le menu si on clique ailleurs
+      document.addEventListener('click', function(e) {
+        if (!profileMenu.contains(e.target) && e.target !== profileButton) {
+          profileMenu.classList.add('hidden');
+        }
+      });
+    }
+
+    // Gestion du menu mobile
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (mobileMenuButton && mobileMenu) {
+      mobileMenuButton.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+  });
+</script>

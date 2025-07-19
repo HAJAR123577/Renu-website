@@ -1,0 +1,54 @@
+<% if @utilisateur.present? %>
+  <%= form_for @utilisateur, html: { class: "space-y-10 mt-16", data: { turbo: false } } do |f| %>
+    
+    <div class="bg-white p-8 rounded-3xl shadow-2xl max-w-4xl mx-auto">
+      <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Modifier le profil</h1>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Nom -->
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Nom</label>
+          <%= f.text_field :nom, class: "w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" %>
+        </div>
+
+        <!-- Adresse Email -->
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Adresse Email</label>
+          <%= f.email_field :email, class: "w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" %>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <label class="block text-gray-700 font-semibold mb-2">
+          Mot de passe <span class="text-sm text-gray-500">(laissez vide pour ne pas changer)</span>
+        </label>
+        <%= f.password_field :password, class: "w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" %>
+      </div>
+
+      <div class="mt-6">
+        <label class="block text-gray-700 font-semibold mb-2">Confirmation du mot de passe</label>
+        <%= f.password_field :password_confirmation, class: "w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" %>
+      </div>
+
+      <!-- Bouton de soumission -->
+      <div class="mt-10 text-center">
+        <%= f.submit "Mettre à jour", class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl shadow-md transition-transform transform hover:scale-105" %>
+      </div>
+
+      <!-- Affichage des erreurs -->
+      <% if @utilisateur.errors.any? %>
+        <div class="mt-8 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg">
+          <h2 class="font-bold mb-2">Erreurs :</h2>
+          <ul class="list-disc list-inside space-y-1">
+            <% @utilisateur.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+    
+  <% end %>
+<% else %>
+  <p class="text-center text-red-600 font-semibold mt-6">L'utilisateur n'a pas été trouvé.</p>
+<% end %>
